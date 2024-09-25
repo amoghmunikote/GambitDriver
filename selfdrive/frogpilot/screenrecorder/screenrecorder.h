@@ -6,6 +6,13 @@
 #include "selfdrive/ui/qt/onroad/buttons.h"
 
 class ScreenRecorder : public QPushButton {
+#ifdef NO_SR
+  public:
+    explicit ScreenRecorder(QWidget *parent = nullptr){}
+    ~ScreenRecorder() override{}
+
+    void updateScreen(){}
+#else
   Q_OBJECT
 
 public:
@@ -40,4 +47,5 @@ private:
   std::unique_ptr<OmxEncoder> encoder;
 
   std::unique_ptr<uint8_t[]> rgbScaleBuffer;
+#endif //NO_SR
 };
