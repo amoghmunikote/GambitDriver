@@ -89,7 +89,7 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
 
     vlayout->addSpacing(30);
 
-    QLabel *title = new QLabel(tr("Pair your device to your comma account"), this);
+    QLabel *title = new QLabel(tr("Pair your device to your springer account"), this);
     title->setStyleSheet("font-size: 75px; color: black;");
     title->setWordWrap(true);
     vlayout->addWidget(title);
@@ -100,9 +100,9 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
         <li style='margin-bottom: 50px;'>%2</li>
         <li style='margin-bottom: 50px;'>%3</li>
       </ol>
-    )").arg(tr("Go to https://connect.comma.ai on your phone"))
+    )").arg(tr("Go to https://portal.springerelectronics.com/ on your phone"))
     .arg(tr("Click \"add new device\" and scan the QR code on the right"))
-    .arg(tr("Bookmark connect.comma.ai to your home screen to use it like an app")), this);
+    .arg(tr("Bookmark portal.springerelectronics.com to your home screen to use it like an app")), this);
 
     instructions->setStyleSheet("font-size: 47px; font-weight: bold; color: black;");
     instructions->setWordWrap(true);

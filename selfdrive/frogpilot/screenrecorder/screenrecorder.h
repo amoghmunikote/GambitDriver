@@ -11,7 +11,7 @@ class ScreenRecorder : public QPushButton {
     explicit ScreenRecorder(QWidget *parent = nullptr){}
     ~ScreenRecorder() override{}
 
-    void updateScreen(){}
+    void updateScreen(double fps, bool started){}
 #else
   Q_OBJECT
 
