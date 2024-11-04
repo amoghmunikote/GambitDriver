@@ -1,2 +1,7 @@
 *.cc
 translations_assets.qrc
+
+#Ignoring new logos
+selfdrive/assets/images/button_home.png
+selfdrive/assets/img_spinner_comma.png
+selfdrive/assets/img_chffr_wheel.png
