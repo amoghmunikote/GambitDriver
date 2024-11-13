@@ -101,13 +101,13 @@ QWidget * Setup::low_voltage() {
   inner_layout->addWidget(triangle, 0, Qt::AlignTop | Qt::AlignLeft);
   inner_layout->addSpacing(80);
 
-  QLabel *title = new QLabel(tr("WARNING: Low Voltage"));
+  QLabel *title = new QLabel(tr("WARNING: Low or Unstable Voltage"));
   title->setStyleSheet("font-size: 90px; font-weight: 500; color: #FF594F;");
   inner_layout->addWidget(title, 0, Qt::AlignTop | Qt::AlignLeft);
 
   inner_layout->addSpacing(25);
 
-  QLabel *body = new QLabel(tr("Power your device in a car with a harness or proceed at your own risk."));
+  QLabel *body = new QLabel(tr("It appears you are using a power supply under 12V. Proceed at your own risk."));
   body->setWordWrap(true);
   body->setAlignment(Qt::AlignTop | Qt::AlignLeft);
   body->setStyleSheet("font-size: 80px; font-weight: 300;");
