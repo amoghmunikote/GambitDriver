@@ -36,7 +36,7 @@ void PairingQRWidget::hideEvent(QHideEvent *event) {
 
 void PairingQRWidget::refresh() {
   QString pairToken = CommaApi::create_jwt({{"pair", true}});
-  QString qrString = "https://portal.springerelectronics.com/?pair=" + pairToken;
+  QString qrString = "portal.springerelectronics.com/?pair=" + pairToken;
   this->updateQrCode(qrString);
   update();
 }
@@ -89,7 +89,7 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
 
     vlayout->addSpacing(30);
 
-    QLabel *title = new QLabel(tr("Pair your device to your comma account"), this);
+    QLabel *title = new QLabel(tr("Pair your device to Springer Portal"), this);
     title->setStyleSheet("font-size: 75px; color: black;");
     title->setWordWrap(true);
     vlayout->addWidget(title);
@@ -100,9 +100,9 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
         <li style='margin-bottom: 50px;'>%2</li>
         <li style='margin-bottom: 50px;'>%3</li>
       </ol>
-    )").arg(tr("Go to https://portal.springerelectronics.com on your phone"))
+    )").arg(tr("Go to portal.springerelectronics.com on your phone"))
     .arg(tr("Click \"add new device\" and scan the QR code on the right"))
-    .arg(tr("Bookmark portal.springerelectronics.com to your home screen to use it like an app")), this);
+    .arg(tr("Bookmark Springer Portal to your home screen to use it like an app")), this);
 
     instructions->setStyleSheet("font-size: 47px; font-weight: bold; color: black;");
     instructions->setWordWrap(true);
@@ -138,31 +138,17 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
   main_layout->setContentsMargins(80, 90, 80, 60);
   main_layout->setSpacing(0);
 
-  QLabel *upgrade = new QLabel(tr("Upgrade Now"));
+  QLabel *upgrade = new QLabel(tr("Important news"));
   upgrade->setStyleSheet("font-size: 75px; font-weight: bold;");
   main_layout->addWidget(upgrade, 0, Qt::AlignTop);
   main_layout->addSpacing(50);
 
-  QLabel *description = new QLabel(tr("Become a comma prime member at connect.comma.ai"));
+  QLabel *description = new QLabel(tr("Comma prime is not avalible on our fork, but something better is coming soon..."));
   description->setStyleSheet("font-size: 56px; font-weight: light; color: white;");
   description->setWordWrap(true);
   main_layout->addWidget(description, 0, Qt::AlignTop);
 
   main_layout->addStretch();
-
-  QLabel *features = new QLabel(tr("PRIME FEATURES:"));
-  features->setStyleSheet("font-size: 41px; font-weight: bold; color: #E5E5E5;");
-  main_layout->addWidget(features, 0, Qt::AlignBottom);
-  main_layout->addSpacing(30);
-
-  QVector<QString> bullets = {tr("Remote access"), tr("24/7 LTE connectivity"), tr("1 year of drive storage"), tr("Remote snapshots")};
-  for (auto &b : bullets) {
-    const QString check = "<b><font color='#465BEA'>✓</font></b> ";
-    QLabel *l = new QLabel(check + b);
-    l->setAlignment(Qt::AlignLeft);
-    l->setStyleSheet("font-size: 50px; margin-bottom: 15px;");
-    main_layout->addWidget(l, 0, Qt::AlignBottom);
-  }
 
   setStyleSheet(R"(
     PrimeAdWidget {
@@ -188,7 +174,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   registrationTitle->setStyleSheet("font-size: 75px; font-weight: bold;");
   finishRegistrationLayout->addWidget(registrationTitle);
 
-  QLabel* registrationDescription = new QLabel(tr("Pair your device with comma connect (connect.comma.ai) and claim your comma prime offer."));
+  QLabel* registrationDescription = new QLabel(tr("Hi! Pair me with Springer Portal :D"));
   registrationDescription->setWordWrap(true);
   registrationDescription->setStyleSheet("font-size: 50px; font-weight: light;");
   finishRegistrationLayout->addWidget(registrationDescription);
