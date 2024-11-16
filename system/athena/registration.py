@@ -36,12 +36,16 @@ def register(show_spinner=False) -> str | None:
   IMEI = params.get("IMEI", encoding='utf8')
   HardwareSerial = params.get("HardwareSerial", encoding='utf8')
   dongle_id: str | None = params.get("DongleId", encoding='utf8')
+  springer_id: str | None = params.get("SpringerId", encoding='utf8')
   if dongle_id is None and Path(Paths.persist_root()+"/comma/dongle_id").is_file():
     # not all devices will have this; added early in comma 3X production (2/28/24)
     with open(Paths.persist_root()+"/comma/dongle_id") as f:
       dongle_id = f.read().strip()
 
-  needs_registration = None in (IMEI, HardwareSerial, dongle_id)
+  needs_registration = None in (IMEI, HardwareSerial, dongle_id, springer_id)
+  if springer_id is not None and dongle_id is not None:
+    needs_registration = springer_id != dongle_id
+
   pubkey = Path(Paths.persist_root()+"/comma/id_rsa.pub")
   if not pubkey.is_file():
     dongle_id = UNREGISTERED_DONGLE_ID
@@ -93,6 +97,9 @@ def register(show_spinner=False) -> str | None:
       except Exception:
         cloudlog.exception("failed to authenticate")
         backoff = min(backoff + 1, 15)
+        if backoff == 15: # Give up if the device can't connect.
+          dongle_id = UNREGISTERED_DONGLE_ID
+          break
         time.sleep(backoff)
 
       if time.monotonic() - start_time > 60 and show_spinner:
@@ -103,6 +110,7 @@ def register(show_spinner=False) -> str | None:
 
   if dongle_id:
     params.put("DongleId", dongle_id)
+    params.put("SpringerId", dongle_id)
     set_offroad_alert("Offroad_UnofficialHardware", (dongle_id == UNREGISTERED_DONGLE_ID) and not PC)
   return dongle_id
 
