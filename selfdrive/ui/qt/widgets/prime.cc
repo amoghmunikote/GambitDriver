@@ -36,7 +36,7 @@ void PairingQRWidget::hideEvent(QHideEvent *event) {
 
 void PairingQRWidget::refresh() {
   QString pairToken = CommaApi::create_jwt({{"pair", true}});
-  QString qrString = "portal.springerelectronics.com/?pair=" + pairToken;
+  QString qrString = "https://portal.springerelectronics.com/?pair=" + pairToken;
   this->updateQrCode(qrString);
   update();
 }
@@ -88,7 +88,6 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
     QObject::connect(close, &QPushButton::clicked, this, &QDialog::reject);
 
     vlayout->addSpacing(30);
-
     QLabel *title = new QLabel(tr("Pair me with Springer Portal!"), this);
     title->setStyleSheet("font-size: 75px; color: black;");
     title->setWordWrap(true);
