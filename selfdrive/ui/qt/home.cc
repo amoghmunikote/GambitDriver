@@ -5,9 +5,12 @@
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
-#include "selfdrive/ui/qt/offroad/experimental_mode.h"
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/widgets/prime.h"
+
+#include "selfdrive/ui/qt/widgets/driving_mode_button.h"
+#include "selfdrive/ui/qt/offroad/driving_mode_panel.h"
+#include "selfdrive/ui/qt/offroad/info_display_bar.h"
 
 // HomeWindow: the container for the offroad and onroad UIs
 
@@ -87,12 +90,11 @@ void HomeWindow::mouseDoubleClickEvent(QMouseEvent* e) {
 
 OffroadHome::OffroadHome(QWidget* parent) : QFrame(parent) {
   QVBoxLayout* main_layout = new QVBoxLayout(this);
-  main_layout->setContentsMargins(40, 40, 40, 40);
+  main_layout->setContentsMargins(30, 18, 30, 30);
 
   // top header
   QHBoxLayout* header_layout = new QHBoxLayout();
   header_layout->setContentsMargins(0, 0, 0, 0);
-  header_layout->setSpacing(16);
 
   update_notif = new QPushButton(tr("UPDATE"));
   update_notif->setVisible(false);
@@ -112,7 +114,7 @@ OffroadHome::OffroadHome(QWidget* parent) : QFrame(parent) {
   main_layout->addLayout(header_layout);
 
   // main content
-  main_layout->addSpacing(25);
+  main_layout->addSpacing(15);
   center_layout = new QStackedLayout();
 
   QWidget *home_widget = new QWidget(this);
@@ -121,42 +123,54 @@ OffroadHome::OffroadHome(QWidget* parent) : QFrame(parent) {
     home_layout->setContentsMargins(0, 0, 0, 0);
     home_layout->setSpacing(30);
 
-    // left: PrimeAdWidget
+    // left: InfoDisplayBar, DrivingModePanel, and PrimeAdWidget
     QStackedWidget *left_widget = new QStackedWidget(this);
-    QVBoxLayout *left_prime_layout = new QVBoxLayout();
-    QWidget *prime_user = new PrimeUserWidget();
-    prime_user->setStyleSheet(R"(
-    border-radius: 10px;
-    background-color: #333333;
-    )");
-    left_prime_layout->addWidget(prime_user);
-    left_prime_layout->addStretch();
-    left_widget->addWidget(new LayoutWidget(left_prime_layout));
-    left_widget->addWidget(new PrimeAdWidget);
-    left_widget->setStyleSheet("border-radius: 10px;");
 
-    connect(uiState()->prime_state, &PrimeState::changed, [left_widget]() {
-      left_widget->setCurrentIndex(uiState()->prime_state->isSubscribed() ? 0 : 1);
-    });
+    // Default view (index 0)
+    QWidget *default_view = new QWidget(this);
+    QVBoxLayout *default_layout = new QVBoxLayout(default_view);
+    default_layout->setContentsMargins(0, 0, 0, 0);
+    default_layout->setSpacing(30); // Spacing between InfoDisplayBar and DrivingModePanel
+
+    InfoDisplayBar *info_display_bar = new InfoDisplayBar(this);
+    default_layout->addWidget(info_display_bar);
+
+    DrivingModePanel *driving_mode_panel = new DrivingModePanel(this);
+    default_layout->addWidget(static_cast<QWidget*>(driving_mode_panel));
+
+    QObject::connect(driving_mode_panel, &DrivingModePanel::modeSelected, info_display_bar, &InfoDisplayBar::showModeMessage);
+
+    default_layout->addStretch();
+
+    left_widget->addWidget(default_view);
+
+    // PrimeAdWidget (index 1)
+    PrimeAdWidget *prime_ad_widget = new PrimeAdWidget(this);
+    left_widget->addWidget(prime_ad_widget);
 
     home_layout->addWidget(left_widget, 1);
 
-    // right: ExperimentalModeButton, SetupWidget
+    // right: PrimeAccountTypeWidget, SetupWidget
     QWidget* right_widget = new QWidget(this);
     QVBoxLayout* right_column = new QVBoxLayout(right_widget);
     right_column->setContentsMargins(0, 0, 0, 0);
-    right_widget->setFixedWidth(750);
+    right_widget->setFixedWidth(615);
     right_column->setSpacing(30);
 
-    ExperimentalModeButton *experimental_mode = new ExperimentalModeButton(this);
-    QObject::connect(experimental_mode, &ExperimentalModeButton::openSettings, this, &OffroadHome::openSettings);
-    right_column->addWidget(experimental_mode, 1);
+    PrimeAccountTypeWidget *prime_account_type_widget = new PrimeAccountTypeWidget;
+    right_column->addWidget(prime_account_type_widget);
 
     SetupWidget *setup_widget = new SetupWidget;
     QObject::connect(setup_widget, &SetupWidget::openSettings, this, &OffroadHome::openSettings);
     right_column->addWidget(setup_widget, 1);
+    right_column->addStretch();
 
     home_layout->addWidget(right_widget, 1);
+
+    // Display PrimeAdWidget when PrimeDefaultWidget is clicked
+    QObject::connect(prime_account_type_widget->findChild<PrimeDefaultWidget*>(), &QPushButton::clicked, [=]() {
+      left_widget->setCurrentIndex(left_widget->currentIndex() == 0 ? 1 : 0);
+    });
   }
   center_layout->addWidget(home_widget);
 
@@ -182,13 +196,14 @@ OffroadHome::OffroadHome(QWidget* parent) : QFrame(parent) {
       background-color: black;
     }
     OffroadHome > QPushButton {
-      padding: 15px 30px;
-      border-radius: 5px;
-      font-size: 40px;
+      padding: 15px 36px;
+      border-radius: 20px;
+      font-size: 36px;
       font-weight: 500;
     }
     OffroadHome > QLabel {
-      font-size: 55px;
+      font-size: 36px;
+      font-family: 'JetBrains Mono';
     }
   )");
 }
