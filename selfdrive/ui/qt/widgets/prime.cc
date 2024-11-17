@@ -36,7 +36,7 @@ void PairingQRWidget::hideEvent(QHideEvent *event) {
 
 void PairingQRWidget::refresh() {
   QString pairToken = CommaApi::create_jwt({{"pair", true}});
-  QString qrString = "https://portal.springerelectronics.com/?pair=" + pairToken;
+  QString qrString = "portal.springerelectronics.com/?pair=" + pairToken;
   this->updateQrCode(qrString);
   update();
 }
@@ -100,7 +100,7 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
         <li style='margin-bottom: 50px;'>%2</li>
         <li style='margin-bottom: 50px;'>%3</li>
       </ol>
-    )").arg(tr("Go to https://portal.springerelectronics.com on your phone"))
+    )").arg(tr("Go to portal.springerelectronics.com on your phone"))
     .arg(tr("Click \"add new device\" and scan the QR code on the right"))
     .arg(tr("Bookmark Springer Portal to your home screen to use it like an app")), this);
 
@@ -246,7 +246,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistrationLayout->setSpacing(0);
   finishRegistrationLayout->setContentsMargins(40, 60, 40, 40);
 
-  QLabel* registrationTitle = new QLabel(tr("One more thing..."));
+  QLabel* registrationTitle = new QLabel(tr("One last step..."));
   registrationTitle->setStyleSheet("font-size: 70px; font-weight: bold; color: #FFEB88; padding: 0 30px;");
   registrationTitle->setFixedHeight(180);
   registrationTitle->setWordWrap(true);
