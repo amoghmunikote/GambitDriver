@@ -89,7 +89,7 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
 
     vlayout->addSpacing(30);
 
-    QLabel *title = new QLabel(tr("Pair your device to your comma account"), this);
+    QLabel *title = new QLabel(tr("Pair me with Springer Portal!"), this);
     title->setStyleSheet("font-size: 75px; color: black;");
     title->setWordWrap(true);
     vlayout->addWidget(title);
@@ -100,9 +100,9 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
         <li style='margin-bottom: 50px;'>%2</li>
         <li style='margin-bottom: 50px;'>%3</li>
       </ol>
-    )").arg(tr("Go to https://connect.comma.ai on your phone"))
+    )").arg(tr("Go to https://portal.springerelectronics.com on your phone"))
     .arg(tr("Click \"add new device\" and scan the QR code on the right"))
-    .arg(tr("Bookmark connect.comma.ai to your home screen to use it like an app")), this);
+    .arg(tr("Bookmark Springer Portal to your home screen to use it like an app")), this);
 
     instructions->setStyleSheet("font-size: 47px; font-weight: bold; color: black;");
     instructions->setWordWrap(true);
@@ -127,14 +127,10 @@ PrimeDefaultWidget::PrimeDefaultWidget(QWidget *parent) : QPushButton(parent) {
 
   QVBoxLayout *textLayout = new QVBoxLayout();
 
-  QLabel *notSubscribed = new QLabel(tr("NOT SUBSCRIBED"));
-  notSubscribed->setStyleSheet("font-size: 36px; font-weight: bold; color: #FFEB88;");
-
-  QLabel *wantToJoin = new QLabel(tr("Want to join?"));
+  QLabel *wantToJoin = new QLabel(tr("Join our discord!"));
   wantToJoin->setStyleSheet("font-size: 60px; font-weight: bold; color: white;");
 
   textLayout->addStretch();
-  textLayout->addWidget(notSubscribed);
   textLayout->addWidget(wantToJoin);
   textLayout->addStretch();
 
@@ -192,31 +188,17 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
   main_layout->setContentsMargins(80, 90, 80, 60);
   main_layout->setSpacing(0);
 
-  QLabel *upgrade = new QLabel(tr("Upgrade Now"));
+  QLabel *upgrade = new QLabel(tr("Join our Discord server! discord.gg/U9GRdsHBjV"));
   upgrade->setStyleSheet("font-size: 75px; font-weight: bold;");
   main_layout->addWidget(upgrade, 0, Qt::AlignTop);
   main_layout->addSpacing(50);
 
-  QLabel *description = new QLabel(tr("Become a comma prime member at connect.comma.ai"));
+  QLabel *description = new QLabel(tr(""));
   description->setStyleSheet("font-size: 56px; font-weight: light; color: white;");
   description->setWordWrap(true);
   main_layout->addWidget(description, 0, Qt::AlignTop);
 
   main_layout->addStretch();
-
-  QLabel *features = new QLabel(tr("PRIME FEATURES:"));
-  features->setStyleSheet("font-size: 41px; font-weight: bold; color: #E5E5E5;");
-  main_layout->addWidget(features, 0, Qt::AlignBottom);
-  main_layout->addSpacing(30);
-
-  QVector<QString> bullets = {tr("Remote access"), tr("24/7 LTE connectivity"), tr("1 year of drive storage"), tr("Remote snapshots")};
-  for (auto &b : bullets) {
-    const QString check = "<b><font color='#AAED70'>✓</font></b> ";
-    QLabel *l = new QLabel(check + b);
-    l->setAlignment(Qt::AlignLeft);
-    l->setStyleSheet("font-size: 50px; margin-bottom: 15px;");
-    main_layout->addWidget(l, 0, Qt::AlignBottom);
-  }
 
   setStyleSheet(R"(
     PrimeAdWidget {
@@ -224,9 +206,9 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
       background: qlineargradient(
         x1: 0, y1: 0,
         x2: 1, y2: 1,
-        stop: 0 #081912,
+        stop: 0 #4A504B,
         stop: 0.5 #2a5633,
-        stop: 1 #5caa6c
+        stop: 1 #467F67
       );
       border: 9px solid rgba(57, 255, 20, 0.3);
     }
@@ -264,13 +246,13 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   finishRegistrationLayout->setSpacing(0);
   finishRegistrationLayout->setContentsMargins(40, 60, 40, 40);
 
-  QLabel* registrationTitle = new QLabel(tr("Last step to finish setup!"));
+  QLabel* registrationTitle = new QLabel(tr("One more thing..."));
   registrationTitle->setStyleSheet("font-size: 70px; font-weight: bold; color: #FFEB88; padding: 0 30px;");
   registrationTitle->setFixedHeight(180);
   registrationTitle->setWordWrap(true);
   finishRegistrationLayout->addWidget(registrationTitle);
 
-  QLabel* registrationDescription = new QLabel(tr("Pair your device with comma connect and claim your comma prime offer."));
+  QLabel* registrationDescription = new QLabel(tr("Make sure to pair me with Springer Portal!"));
   registrationDescription->setWordWrap(true);
   registrationDescription->setStyleSheet("font-size: 40px; font-weight: normal; color: white; padding: 0 30px;");
   finishRegistrationLayout->addWidget(registrationDescription);
@@ -281,11 +263,11 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
       font-size: 50px;
       font-weight: 500;
       border-radius: 25px;
-      background-color: #465BEA;
+      background-color: #849A5B;
       padding: 33px;
     }
     QPushButton:pressed {
-      background-color: #3049F4;
+      background-color: #4A5633;
     }
   )");
   finishRegistrationLayout->addWidget(pair);
