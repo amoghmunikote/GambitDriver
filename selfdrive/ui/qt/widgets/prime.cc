@@ -128,7 +128,7 @@ PrimeDefaultWidget::PrimeDefaultWidget(QWidget *parent) : QPushButton(parent) {
   QVBoxLayout *textLayout = new QVBoxLayout();
 
   QLabel *wantToJoin = new QLabel(tr("Join our discord!"));
-  wantToJoin->setStyleSheet("font-size: 60px; font-weight: bold; color: white;");
+  wantToJoin->setStyleSheet("font-size: 45px; font-weight: bold; color: white;");
 
   textLayout->addStretch();
   textLayout->addWidget(wantToJoin);
@@ -188,12 +188,12 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
   main_layout->setContentsMargins(80, 90, 80, 60);
   main_layout->setSpacing(0);
 
-  QLabel *upgrade = new QLabel(tr("Join our Discord server! discord.gg/U9GRdsHBjV"));
+  QLabel *upgrade = new QLabel(tr("Join our Discord server!"));
   upgrade->setStyleSheet("font-size: 75px; font-weight: bold;");
   main_layout->addWidget(upgrade, 0, Qt::AlignTop);
   main_layout->addSpacing(50);
 
-  QLabel *description = new QLabel(tr(""));
+  QLabel *description = new QLabel(tr("discord.gg/U9GRdsHBjV"));
   description->setStyleSheet("font-size: 56px; font-weight: light; color: white;");
   description->setWordWrap(true);
   main_layout->addWidget(description, 0, Qt::AlignTop);
