@@ -20,7 +20,7 @@ WiFiPromptWidget::WiFiPromptWidget(QWidget *parent) : QFrame(parent) {
   setup_icon->setPixmap(QPixmap("../assets/offroad/icon_wifi_setup.svg").scaledToWidth(218, Qt::SmoothTransformation));
   setup_icon->setAlignment(Qt::AlignCenter);
 
-  QLabel *setup_desc = new QLabel(tr("Connect to Wi-Fi to upload driving data and help improve openpilot"));
+  QLabel *setup_desc = new QLabel(tr("Connect to Wi-Fi to upload driving data."));
   setup_desc->setStyleSheet("font-size: 40px; font-weight: 400; padding: 0 50px;");
   setup_desc->setWordWrap(true);
   setup_desc->setAlignment(Qt::AlignCenter);
@@ -66,7 +66,7 @@ WiFiPromptWidget::WiFiPromptWidget(QWidget *parent) : QFrame(parent) {
   bottom_label->setStyleSheet("font-size: 77px; font-weight: 600; color: #AAED70;");
   bottom_label->setAlignment(Qt::AlignCenter);
 
-  QLabel *uploading_desc = new QLabel(tr("Training data will be pulled periodically while your device is on Wi-Fi"));
+  QLabel *uploading_desc = new QLabel(tr("Training data will be pulled periodically while your device is on Wi-Fi."));
   uploading_desc->setStyleSheet("font-size: 42px; font-weight: 400;");
   uploading_desc->setWordWrap(true);
   uploading_desc->setAlignment(Qt::AlignCenter);
