@@ -101,7 +101,7 @@ void DrivingModeInfoDialog::setModeInfo(DrivingMode mode) {
                                "The system will be more conservative in its actions, prioritizing a smooth and comfortable ride."));
       break;
     case DrivingMode::Experimental:
-      iconLabel->setPixmap(QPixmap("../assets/img_experimental.svg").scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+      iconLabel->setPixmap(QPixmap("../assets/img_experimental_white.svg").scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
       titleLabel->setText(tr("Experimental Mode"));
       contentLabel->setText(tr("openpilot defaults to driving in chill mode. Experimental mode enables alpha-level features that aren't ready for chill mode. Experimental features are listed below:\n\n"
                                "End-to-End Longitudinal Control\n\n"
