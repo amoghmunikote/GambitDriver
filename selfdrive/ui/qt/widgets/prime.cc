@@ -89,7 +89,7 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
 
     vlayout->addSpacing(30);
 
-    QLabel *title = new QLabel(tr("Pair your device to Springer Portal"), this);
+    QLabel *title = new QLabel(tr("Pair me with Springer Portal!"), this);
     title->setStyleSheet("font-size: 75px; color: black;");
     title->setWordWrap(true);
     vlayout->addWidget(title);
@@ -117,19 +117,69 @@ PairingPopup::PairingPopup(QWidget *parent) : DialogBase(parent) {
 }
 
 
-PrimeUserWidget::PrimeUserWidget(QWidget *parent) : QFrame(parent) {
+PrimeDefaultWidget::PrimeDefaultWidget(QWidget *parent) : QPushButton(parent) {
+  setObjectName("primeDefaultWidget");
+  setFixedHeight(244);
+
+  QHBoxLayout *mainLayout = new QHBoxLayout(this);
+  mainLayout->setContentsMargins(55, 50, 55, 50);
+  mainLayout->setSpacing(0);
+
+  QVBoxLayout *textLayout = new QVBoxLayout();
+
+  QLabel *wantToJoin = new QLabel(tr("Join our discord!"));
+  wantToJoin->setStyleSheet("font-size: 45px; font-weight: bold; color: white;");
+
+  textLayout->addStretch();
+  textLayout->addWidget(wantToJoin);
+  textLayout->addStretch();
+
+  mainLayout->addLayout(textLayout);
+  mainLayout->addStretch(); // Pushes btnIcon to the right
+
+  QLabel *btnIcon = new QLabel("❯");
+  btnIcon->setStyleSheet("font-size: 60px; font-weight: bold; color: white;");
+  mainLayout->addWidget(btnIcon);
+
+  setStyleSheet(R"(
+    #primeDefaultWidget {
+      border: 2px solid #F5D847;
+      border-radius: 25px;
+      background-color: #333333;
+    }
+    #primeDefaultWidget:pressed {
+      background-color: #444444;
+    }
+  )");
+}
+
+
+PrimeSubscribedWidget::PrimeSubscribedWidget(QWidget *parent) : QFrame(parent) {
   setObjectName("primeWidget");
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  mainLayout->setContentsMargins(56, 40, 56, 40);
-  mainLayout->setSpacing(20);
+  mainLayout->setContentsMargins(55, 50, 55, 50);
+  mainLayout->setSpacing(3);
 
   QLabel *subscribed = new QLabel(tr("✓ SUBSCRIBED"));
-  subscribed->setStyleSheet("font-size: 41px; font-weight: bold; color: #86FF4E;");
-  mainLayout->addWidget(subscribed);
+  subscribed->setStyleSheet("font-size: 36px; font-weight: bold;");
+  subscribed->setText(QString("<span style='color: #AAED70;'>✓</span> SUBSCRIBED"));
 
   QLabel *commaPrime = new QLabel(tr("comma prime"));
-  commaPrime->setStyleSheet("font-size: 75px; font-weight: bold;");
+  commaPrime->setStyleSheet("font-size: 60px; font-weight: bold;");
+  commaPrime->setText(QString("comma <span style='color: #AAED70;'>prime</span>"));
+
+  // Add stretches to center the labels vertically
+  mainLayout->addStretch();
+  mainLayout->addWidget(subscribed);
   mainLayout->addWidget(commaPrime);
+  mainLayout->addStretch();
+
+  setStyleSheet(R"(
+    #primeWidget {
+      border-radius: 25px;
+      background-color: #333333;
+    }
+  )");
 }
 
 
@@ -138,12 +188,12 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
   main_layout->setContentsMargins(80, 90, 80, 60);
   main_layout->setSpacing(0);
 
-  QLabel *upgrade = new QLabel(tr("Important news"));
+  QLabel *upgrade = new QLabel(tr("Join our Discord server!"));
   upgrade->setStyleSheet("font-size: 75px; font-weight: bold;");
   main_layout->addWidget(upgrade, 0, Qt::AlignTop);
   main_layout->addSpacing(50);
 
-  QLabel *description = new QLabel(tr("Comma prime is not avalible on our fork, but something better is coming soon..."));
+  QLabel *description = new QLabel(tr("discord.gg/U9GRdsHBjV"));
   description->setStyleSheet("font-size: 56px; font-weight: light; color: white;");
   description->setWordWrap(true);
   main_layout->addWidget(description, 0, Qt::AlignTop);
@@ -152,46 +202,72 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
 
   setStyleSheet(R"(
     PrimeAdWidget {
-      border-radius: 10px;
-      background-color: #333333;
+      border-radius: 25px;
+      background: qlineargradient(
+        x1: 0, y1: 0,
+        x2: 1, y2: 1,
+        stop: 0 #4A504B,
+        stop: 0.5 #2a5633,
+        stop: 1 #467F67
+      );
+      border: 9px solid rgba(57, 255, 20, 0.3);
     }
   )");
 }
 
 
+PrimeAccountTypeWidget::PrimeAccountTypeWidget(QWidget* parent) : QWidget(parent) {
+  QVBoxLayout *main_layout = new QVBoxLayout(this);
+  main_layout->setContentsMargins(0, 0, 0, 0);
+  main_layout->setSpacing(0);
+
+  stack = new QStackedWidget;
+  stack->addWidget(new PrimeDefaultWidget);
+  stack->addWidget(new PrimeSubscribedWidget);
+  main_layout->addWidget(stack);
+
+  QObject::connect(uiState()->prime_state, &PrimeState::changed, [this]() {
+    stack->setCurrentIndex(uiState()->prime_state->isSubscribed() ? 1 : 0);
+  });
+
+  setFixedHeight(244);
+}
+
+
 SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   mainLayout = new QStackedWidget;
+  setFixedHeight(650);
 
   // Unpaired, registration prompt layout
 
   QFrame* finishRegistration = new QFrame;
   finishRegistration->setObjectName("primeWidget");
   QVBoxLayout* finishRegistrationLayout = new QVBoxLayout(finishRegistration);
-  finishRegistrationLayout->setSpacing(38);
-  finishRegistrationLayout->setContentsMargins(64, 48, 64, 48);
+  finishRegistrationLayout->setSpacing(0);
+  finishRegistrationLayout->setContentsMargins(40, 60, 40, 40);
 
-  QLabel* registrationTitle = new QLabel(tr("Finish Setup"));
-  registrationTitle->setStyleSheet("font-size: 75px; font-weight: bold;");
+  QLabel* registrationTitle = new QLabel(tr("One last step..."));
+  registrationTitle->setStyleSheet("font-size: 70px; font-weight: bold; color: #FFEB88; padding: 0 30px;");
+  registrationTitle->setFixedHeight(180);
+  registrationTitle->setWordWrap(true);
   finishRegistrationLayout->addWidget(registrationTitle);
 
-  QLabel* registrationDescription = new QLabel(tr("Hi! Pair me with Springer Portal :D"));
+  QLabel* registrationDescription = new QLabel(tr("Make sure to pair me with Springer Portal!"));
   registrationDescription->setWordWrap(true);
-  registrationDescription->setStyleSheet("font-size: 50px; font-weight: light;");
+  registrationDescription->setStyleSheet("font-size: 40px; font-weight: normal; color: white; padding: 0 30px;");
   finishRegistrationLayout->addWidget(registrationDescription);
-
-  finishRegistrationLayout->addStretch();
 
   QPushButton* pair = new QPushButton(tr("Pair device"));
   pair->setStyleSheet(R"(
     QPushButton {
-      font-size: 55px;
+      font-size: 50px;
       font-weight: 500;
-      border-radius: 10px;
-      background-color: #465BEA;
-      padding: 64px;
+      border-radius: 25px;
+      background-color: #849A5B;
+      padding: 33px;
     }
     QPushButton:pressed {
-      background-color: #3049F4;
+      background-color: #4A5633;
     }
   )");
   finishRegistrationLayout->addWidget(pair);
@@ -222,7 +298,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   setStyleSheet(R"(
     #primeWidget {
-      border-radius: 10px;
+      border-radius: 25px;
       background-color: #333333;
     }
   )");
