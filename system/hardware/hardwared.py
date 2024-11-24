@@ -99,7 +99,6 @@ def hw_state_thread(end_event, hw_queue):
   prev_hw_state = None
 
   modem_version = None
-  modem_nv = None
   modem_configured = False
   modem_restarted = False
   modem_missing_count = 0
@@ -114,12 +113,11 @@ def hw_state_thread(end_event, hw_queue):
           modem_temps = prev_hw_state.modem_temps
 
         # Log modem version once
-        if AGNOS and ((modem_version is None) or (modem_nv is None)):
+        if AGNOS and (modem_version is None):
           modem_version = HARDWARE.get_modem_version()
-          modem_nv = HARDWARE.get_modem_nv()
 
-          if (modem_version is not None) and (modem_nv is not None):
-            cloudlog.event("modem version", version=modem_version, nv=modem_nv)
+          if modem_version is not None:
+            cloudlog.event("modem version", version=modem_version)
           else:
             if not modem_restarted:
               # TODO: we may be able to remove this with a MM update
@@ -319,16 +317,6 @@ def hardware_thread(end_event, hw_queue) -> None:
       if not os.path.isfile("/persist/comma/living-in-the-moment"):
         if not Path("/data/media").is_mount():
           set_offroad_alert_if_changed("Offroad_StorageMissing", True)
-        else:
-          # check for bad NVMe
-          try:
-            with open("/sys/block/nvme0n1/device/model") as f:
-              model = f.read().strip()
-            if not model.startswith("Samsung SSD 980") and params.get("Offroad_BadNvme") is None:
-              set_offroad_alert_if_changed("Offroad_BadNvme", True)
-              cloudlog.event("Unsupported NVMe", model=model, error=True)
-          except Exception:
-            pass
 
     # Handle offroad/onroad transition
     should_start = all(onroad_conditions.values())
