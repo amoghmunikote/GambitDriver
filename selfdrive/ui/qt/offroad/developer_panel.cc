@@ -34,6 +34,16 @@ DeveloperPanel::DeveloperPanel(SettingsWindow *parent) : ListWidget(parent) {
   });
   addItem(adbToggle);
 
+    adbToggle = new ParamControl("Adb", tr("Android Debug Bridge"), tr("Enable ADB"), "");
+  QObject::connect(adbToggle, &ParamControl::toggleFlipped, [=](bool state) {
+  if (state) {
+    QProcess::startDetached("sh", {"-c", "setprop service.adb.tcp.port 5555 && sudo /selfdrive/debug/adbd.sh start"});
+  } else {
+    QProcess::startDetached("sh", {"-c", "sudo /selfdrive/debug/adbd.sh stop"});
+  }
+  });
+  addItem(adbToggle);
+
   is_release = params.getBool("IsReleaseBranch");
 
   QObject::connect(uiState(), &UIState::offroadTransition, this, &DeveloperPanel::updateToggles);
